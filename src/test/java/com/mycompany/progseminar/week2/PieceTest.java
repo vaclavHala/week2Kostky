@@ -47,5 +47,10 @@ public class PieceTest {
                 new Point(-2, 3).rotate90Clockwise());
         
     }
+    
+    @Test
+    public void testNormalization(){
+        
+    } 
 
 }
