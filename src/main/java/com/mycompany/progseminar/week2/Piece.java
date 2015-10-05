@@ -36,15 +36,9 @@ public class Piece {
                 .collect(toList()));
     }
 
-    public Piece mirrorX() {
+    public Piece mirror() {
         return new Piece(this.points.stream()
                 .map(Point::mirrorX)
-                .collect(toList()));
-    }
-    
-    public Piece mirrorY() {
-        return new Piece(this.points.stream()
-                .map(Point::mirrorY)
                 .collect(toList()));
     }
 
@@ -54,7 +48,21 @@ public class Piece {
             return false;
         }
         Piece other = (Piece) obj;
-        return other.points.equals(this.points);
+        return asList(
+                other,
+                other.rotate(),
+                other.rotate().rotate(),
+                other.rotate().rotate().rotate(),
+                other.mirror(),
+                other.mirror().rotate(),
+                other.mirror().rotate().rotate(),
+                other.mirror().rotate().rotate().rotate()
+        ).stream()
+                .anyMatch(this::equalsFixedRotation);
+    }
+    
+    private boolean equalsFixedRotation(Piece piece){
+        return piece.points.equals(this.points);
     }
 
     public List<Point> points() {
