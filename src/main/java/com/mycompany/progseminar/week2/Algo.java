@@ -17,17 +17,23 @@ import static java.util.stream.Collectors.toList;
  */
 public class Algo {
 
-    public List<Piece> doIt(int n) {
+    public static void main(String[] args) {
+        
+        System.out.println(doIt(2).stream().map(Piece::render).collect(toList()));
+        
+    }
+    
+    public static List<Piece> doIt(int n) {
         List<Piece> previous = asList(ORIGIN);
-        List<Piece> current = null;
-        for(int i=2; i<n; i++){
+        List<Piece> current = previous;
+        for(int i=1; i<n; i++){
             current = iterate(previous);
             previous = current;
         }
         return current;
     }
 
-    private List<Piece> iterate(List<Piece> previous) {
+    private static List<Piece> iterate(List<Piece> previous) {
         List<Piece> pieces = new ArrayList<>();
         for (Piece piece : previous) {
             pieces.addAll(appendedToOneWithDuplicities(piece));
@@ -35,7 +41,7 @@ public class Algo {
         return pieces.stream().distinct().collect(toList());
     }
 
-    private List<Piece> appendedToOneWithDuplicities(Piece piece) {
+    private static List<Piece> appendedToOneWithDuplicities(Piece piece) {
         List<Piece> newPieces = new ArrayList<>();
         for (Point startingPoint : piece.points()) {
             for (Side side : Side.values()) {

@@ -22,20 +22,19 @@ public class Piece {
     private List<Point> points;
     
     Piece(List<Point> points) {
-        //validate
-        this.points = Collections.unmodifiableList(new ArrayList<>(points));
+        this.points = Collections.unmodifiableList(normalize(new ArrayList<>(points)));
     }
     
-    static Piece normalize(Piece original) {
-        int minX = original.points().stream()
+    static List<Point> normalize(List<Point> original) {
+        int minX = original.stream()
                 .min((a, b) -> Integer.compare(a.getX(), b.getX()))
                 .get().getX();
-        int minY = original.points().stream()
+        int minY = original.stream()
                 .min((a, b) -> Integer.compare(a.getY(), b.getY()))
                 .get().getY();
-        return new Piece(original.points.stream()
+        return original.stream()
                 .map(p -> new Point(p.getX() - minX, p.getY() - minY))
-                .collect(toList()));
+                .collect(toList());
     }
     
     public String render() {
@@ -48,13 +47,13 @@ public class Piece {
         
         StringBuilder piece = new StringBuilder();
         int indexOfPoint = 0;
-        for( int i = 0 ; i < maxY ; i++){
-            for (int j = 0 ; j < maxX ; j++)
+        for( int i = 0 ; i <= maxY ; i++){
+            for (int j = 0 ; j <= maxX ; j++)
             {
               Point p = points.get(indexOfPoint);
               if (p.getX() == j && p.getY() == i ) {
                   piece.append("*");
-                  indexOfPoint++;
+                  if (indexOfPoint < points.size()- 1)indexOfPoint++;
               } else {
                   piece.append(" ");
               }
