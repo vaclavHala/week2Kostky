@@ -9,53 +9,63 @@ import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import java.util.Collections;
 import java.util.List;
+import static java.util.stream.Collectors.toList;
 
 /**
  *
  * @author xhala3
  */
 public class Piece {
- 
-    public static Piece ORIGIN = new Piece(asList(new Point(0,0)));
-    
+
+    public static Piece ORIGIN = new Piece(asList(new Point(0, 0)));
+
     private List<Point> points;
-    
-    Piece(List<Point> points){
+
+    Piece(List<Point> points) {
         //validate
-        this.points =  Collections.unmodifiableList(new ArrayList<>(points));
+        this.points = Collections.unmodifiableList(new ArrayList<>(points));
     }
-    
-    public String render(){
-    return null;
-    }
-    
-    public Piece rotate(){
+
+    public String render() {
         return null;
-        
+    }
+
+    public Piece rotate() {
+        return new Piece(this.points.stream()
+                .map(Point::rotate90Clockwise)
+                .collect(toList()));
+    }
+
+    public Piece mirrorX() {
+        return new Piece(this.points.stream()
+                .map(Point::mirrorX)
+                .collect(toList()));
     }
     
-    public  Piece mirror(){
-        return null;
+    public Piece mirrorY() {
+        return new Piece(this.points.stream()
+                .map(Point::mirrorY)
+                .collect(toList()));
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof Piece)){
+        if (!(obj instanceof Piece)) {
             return false;
         }
-        Piece other =(Piece)obj;
+        Piece other = (Piece) obj;
         return other.points.equals(this.points);
     }
 
-    public List<Point> points(){
-        
+    public List<Point> points() {
+
         return this.points;
     }
-    
-    public Piece appendAt(Point point, Side side){
+
+    public Piece appendAt(Point point, Side side) {
         List<Point> newPoints = new ArrayList<>(points);
         newPoints.add(side.plus(point));
         return new Piece(newPoints);
     }
-    
+
 }

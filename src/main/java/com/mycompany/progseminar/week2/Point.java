@@ -26,7 +26,24 @@ public class Point implements Comparable<Point>{
         this.x = x;
         this.y = y;
     }
+    
+    public Point mirrorX(){
+        return new Point(-this.x, this.y);
+    }
 
+    public Point mirrorY(){
+        return new Point(this.x, -this.y);
+    }
+    
+    public Point rotate90Clockwise(){
+        return new Point( this.y, -1*this.x);
+    }
+
+    @Override
+    public String toString() {
+        return "<"+x+","+y+">";
+    }
+    
     @Override
     public boolean equals(Object obj) {
          if(!(obj instanceof Point)){

@@ -20,22 +20,32 @@ import static org.junit.Assert.*;
  * @author xhala3
  */
 public class PieceTest {
-    
+
     @Test
-    public void testComparePoints(){
-        assertTrue(new Point(0,0).compareTo(new Point(0, 0)) == 0);
-        assertTrue(new Point(1,0).compareTo(new Point(0, 0)) > 0);
-        assertTrue(new Point(1,1).compareTo(new Point(2, 0)) > 0);
+    public void testComparePoints() {
+        assertTrue(new Point(0, 0).compareTo(new Point(0, 0)) == 0);
+        assertTrue(new Point(1, 0).compareTo(new Point(0, 0)) > 0);
+        assertTrue(new Point(1, 1).compareTo(new Point(2, 0)) > 0);
     }
-    
+
     @Test
-    public void testAdd(){
-        System.out.println(ORIGIN.points());
-        
-        assertEquals(new Piece(asList(new Point(0, 0), new Point(0, 1))),
+    public void testAdd() {
+        assertEquals(
+                new Piece(asList(new Point(0, 0), new Point(0, 1))),
                 ORIGIN.appendAt(ORIGIN.points().get(0), Side.UP)
-                );
+        );
     }
-    
-    
+
+    @Test
+    public void testRotation() {
+        assertEquals(
+                new Point(1, 0),
+                new Point(0, 1).rotate90Clockwise());
+        
+        assertEquals(
+                new Point(3, 2),
+                new Point(-2, 3).rotate90Clockwise());
+        
+    }
+
 }
