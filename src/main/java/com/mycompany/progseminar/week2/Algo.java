@@ -18,8 +18,8 @@ import static java.util.stream.Collectors.toList;
 public class Algo {
 
     public static void main(String[] args) {
-        
-        System.out.println(doIt(2).stream().map(Piece::render).collect(toList()));
+        doIt(7).stream()
+            .forEach(p -> System.out.println(p.render()));
         
     }
     
@@ -33,15 +33,15 @@ public class Algo {
         return current;
     }
 
-    private static List<Piece> iterate(List<Piece> previous) {
+     static List<Piece> iterate(List<Piece> previous) {
         List<Piece> pieces = new ArrayList<>();
         for (Piece piece : previous) {
-            pieces.addAll(appendedToOneWithDuplicities(piece));
+            pieces.addAll(appendedToOne(piece));
         }
         return pieces.stream().distinct().collect(toList());
     }
 
-    private static List<Piece> appendedToOneWithDuplicities(Piece piece) {
+     static List<Piece> appendedToOne(Piece piece) {
         List<Piece> newPieces = new ArrayList<>();
         for (Point startingPoint : piece.points()) {
             for (Side side : Side.values()) {
@@ -55,7 +55,7 @@ public class Algo {
                 newPieces.add(new Piece(newPoints));
             }
         }
-        return newPieces;
+        return newPieces.stream().distinct().collect(toList());
     }
 
 }
