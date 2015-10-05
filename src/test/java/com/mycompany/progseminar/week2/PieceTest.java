@@ -47,5 +47,17 @@ public class PieceTest {
                 new Point(-2, 3).rotate90Clockwise());
         
     }
+    /*
+    @Test
+    public void testNormalization(){
+        System.out.println("-------------------START---------------");
+        PieceCreator creator = new PieceCreator();
+        System.out.println(Piece.normalize(creator.create(
+                "  * \n"+
+                " ***\n"+
+                " *  ")).render());
+        System.out.println("-------------------END---------------");
+                
+    } */
 
 }

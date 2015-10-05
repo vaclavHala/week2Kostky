@@ -16,16 +16,27 @@ import static java.util.stream.Collectors.toList;
  * @author xhala3
  */
 public class Piece {
-
+    
     public static Piece ORIGIN = new Piece(asList(new Point(0, 0)));
-
+    
     private List<Point> points;
-
+    
     Piece(List<Point> points) {
-        //validate
-        this.points = Collections.unmodifiableList(new ArrayList<>(points));
+        this.points = Collections.unmodifiableList(normalize(new ArrayList<>(points)));
     }
-
+    
+    static List<Point> normalize(List<Point> original) {
+        int minX = original.stream()
+                .min((a, b) -> Integer.compare(a.getX(), b.getX()))
+                .get().getX();
+        int minY = original.stream()
+                .min((a, b) -> Integer.compare(a.getY(), b.getY()))
+                .get().getY();
+        return original.stream()
+                .map(p -> new Point(p.getX() - minX, p.getY() - minY))
+                .collect(toList());
+    }
+    
     public String render() {
         int maxX = 0;
         int maxY = 0;
@@ -36,13 +47,13 @@ public class Piece {
         
         StringBuilder piece = new StringBuilder();
         int indexOfPoint = 0;
-        for( int i = 0 ; i < maxY ; i++){
-            for (int j = 0 ; j < maxX ; j++)
+        for( int i = 0 ; i <= maxY ; i++){
+            for (int j = 0 ; j <= maxX ; j++)
             {
               Point p = points.get(indexOfPoint);
               if (p.getX() == j && p.getY() == i ) {
                   piece.append("*");
-                  indexOfPoint++;
+                  if (indexOfPoint < points.size()- 1)indexOfPoint++;
               } else {
                   piece.append(" ");
               }
@@ -52,19 +63,19 @@ public class Piece {
         
         return piece.toString();
     }
-
+    
     public Piece rotate() {
         return new Piece(this.points.stream()
                 .map(Point::rotate90Clockwise)
                 .collect(toList()));
     }
-
+    
     public Piece mirror() {
         return new Piece(this.points.stream()
                 .map(Point::mirrorX)
                 .collect(toList()));
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Piece)) {
@@ -84,19 +95,19 @@ public class Piece {
                 .anyMatch(this::equalsFixedRotation);
     }
     
-    private boolean equalsFixedRotation(Piece piece){
+    private boolean equalsFixedRotation(Piece piece) {
         return piece.points.equals(this.points);
     }
-
+    
     public List<Point> points() {
-
+        
         return this.points;
     }
-
+    
     public Piece appendAt(Point point, Side side) {
         List<Point> newPoints = new ArrayList<>(points);
         newPoints.add(side.plus(point));
         return new Piece(newPoints);
     }
-
+    
 }
