@@ -39,7 +39,30 @@ public class Piece {
     }
     
     public String render() {
-        return null;
+        int maxX = 0;
+        int maxY = 0;
+        for( Point p : points) {
+           if (p.getX() > maxX) maxX = p.getX();
+           if (p.getY() > maxY) maxY = p.getY();
+        }
+        
+        StringBuilder piece = new StringBuilder();
+        int indexOfPoint = 0;
+        for( int i = 0 ; i < maxY ; i++){
+            for (int j = 0 ; j < maxX ; j++)
+            {
+              Point p = points.get(indexOfPoint);
+              if (p.getX() == j && p.getY() == i ) {
+                  piece.append("*");
+                  indexOfPoint++;
+              } else {
+                  piece.append(" ");
+              }
+            }
+            piece.append('\n');
+        } 
+        
+        return piece.toString();
     }
     
     public Piece rotate() {
