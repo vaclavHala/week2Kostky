@@ -22,24 +22,22 @@ public class Piece {
     private List<Point> points;
 
     Piece(List<Point> points) {
-        this.points = Collections.unmodifiableList(normalize(new ArrayList<>(points)));
-        if (this.points.size() != points.size()) {
-            throw new ExceptionInInitializerError("one or more duplicate points");
-        }
+        this.points = Collections.unmodifiableList(normalize(points));
     }
 
     static List<Point> normalize(List<Point> original) {
-        int minX = original.stream()
-            .min((a, b) -> Integer.compare(a.getX(), b.getX()))
-            .get().getX();
-        int minY = original.stream()
-            .min((a, b) -> Integer.compare(a.getY(), b.getY()))
-            .get().getY();
-        return original.stream()
-            .map(p -> new Point(p.getX() - minX, p.getY() - minY))
-            .sorted()
-            .distinct()
-            .collect(toList());
+        int minX = Integer.MAX_VALUE;
+        int minY = Integer.MAX_VALUE;
+        for (Point p : original) {
+            minX = Math.min(minX, p.getX());
+            minY = Math.min(minY, p.getY());
+        }
+        List<Point> normalized = new ArrayList<>(original.size());
+        for (Point p : original) {
+            normalized.add(new Point(p.getX() - minX, p.getY() - minY));
+        }
+        Collections.sort(normalized);
+        return normalized;
     }
 
     public String render() {
