@@ -8,15 +8,11 @@ package com.mycompany.progseminar.week2;
 import static com.mycompany.progseminar.week2.Piece.ORIGIN;
 import static java.util.Arrays.asList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import static java.util.stream.Collectors.toList;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -59,11 +55,11 @@ public class PieceTest {
         );
     }
 
-    @Test (expected = ExceptionInInitializerError.class)
-    public void testDuplicationInCtor(){
+    @Test(expected = ExceptionInInitializerError.class)
+    public void testDuplicationInCtor() {
         new Piece(asList(new Point(0, 0), new Point(0, 0)));
     }
-    
+
     @Test
     public void testEqualsRotated() {
         assertEquals(
@@ -75,11 +71,18 @@ public class PieceTest {
         pieces.add(new Piece(asList(new Point(0, 0), new Point(1, 0), new Point(0, 1))));
         pieces.add(new Piece(asList(new Point(1, 2), new Point(2, 2), new Point(1, 3))));
         System.out.println(pieces.size());
-        
+
         assertEquals(1, asList(
                      new Piece(asList(new Point(0, 0), new Point(1, 0), new Point(0, 1))),
                      new Piece(asList(new Point(1, 2), new Point(2, 2), new Point(1, 3)))
                  ).stream().distinct().collect(toList()).size());
+    }
+
+    @Test
+    public void testPieceHashNotDependentOnRotationAndMirroring() {
+        int hash = new Piece(asList(new Point(0, 0), new Point(0, 1), new Point(1, 1))).hashCode();
+        assertEquals(hash, new Piece(asList(new Point(0, 0), new Point(0, 1), new Point(1, 1))).hashCode());
+        assertEquals(hash, new Piece(asList(new Point(0, 1), new Point(1, 0), new Point(1, 1))).hashCode());
     }
 
 }

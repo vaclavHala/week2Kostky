@@ -23,8 +23,8 @@ public class Piece {
 
     Piece(List<Point> points) {
         this.points = Collections.unmodifiableList(normalize(new ArrayList<>(points)));
-        if(this.points.size() != points.size()){
-         throw new ExceptionInInitializerError("one or more duplicate points");
+        if (this.points.size() != points.size()) {
+            throw new ExceptionInInitializerError("one or more duplicate points");
         }
     }
 
@@ -92,31 +92,49 @@ public class Piece {
             return false;
         }
         Piece other = (Piece) obj;
-        return asList(
-            other,
-            other.rotate(),
-            other.rotate().rotate(),
-            other.rotate().rotate().rotate(),
-            other.mirror(),
-            other.mirror().rotate(),
-            other.mirror().rotate().rotate(),
-            other.mirror().rotate().rotate().rotate()
-        ).stream()
-            .anyMatch(this::equalsFixedRotation);
+        //optimization to make sure the mirror and rotate are calculated the least possible number of times
+        Piece last = other;
+        if (this.equalsFixedRotation(last) || this.equalsFixedRotation(last.mirror())) {
+            return true;
+        }
+        last = last.rotate();
+        if (this.equalsFixedRotation(last) || this.equalsFixedRotation(last.mirror())) {
+            return true;
+        }
+        last = last.rotate();
+        if (this.equalsFixedRotation(last) || this.equalsFixedRotation(last.mirror())) {
+            return true;
+        }
+        last = last.rotate();
+        if (this.equalsFixedRotation(last) || this.equalsFixedRotation(last.mirror())) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean equalsFixedRotation(Piece piece) {
+        return piece.points.equals(this.points);
     }
 
     @Override
+    //must not depend on rotation!
     public int hashCode() {
-        return 1;
+        int minX = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE;
+        int minY = Integer.MAX_VALUE;
+        int maxY = Integer.MIN_VALUE;
+        for (Point p : this.points) {
+            minX = Math.min(minX, p.getX());
+            minY = Math.min(minY, p.getY());
+            maxX = Math.max(maxX, p.getX());
+            maxY = Math.max(maxY, p.getY());
+        }
+        return (maxX - minX) + (maxY - minY);
     }
 
     @Override
     public String toString() {
         return this.points.toString();
-    }
-
-    private boolean equalsFixedRotation(Piece piece) {
-        return piece.points.equals(this.points);
     }
 
     public List<Point> points() {
