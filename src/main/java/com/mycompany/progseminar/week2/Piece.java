@@ -20,9 +20,11 @@ public class Piece {
     public static Piece ORIGIN = new Piece(asList(new Point(0, 0)));
 
     private List<Point> points;
+    private int hash;
 
     Piece(List<Point> points) {
         this.points = Collections.unmodifiableList(normalize(points));
+        this.hash = computeHashCode();
     }
 
     static List<Point> normalize(List<Point> original) {
@@ -117,6 +119,10 @@ public class Piece {
     @Override
     //must not depend on rotation!
     public int hashCode() {
+        return hash;
+    }
+    
+    private int computeHashCode(){
         int minX = Integer.MAX_VALUE;
         int maxX = Integer.MIN_VALUE;
         int minY = Integer.MAX_VALUE;
