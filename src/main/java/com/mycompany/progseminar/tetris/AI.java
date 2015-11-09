@@ -44,8 +44,8 @@ public class AI {
     
     public void findPlaceToDrop() {
         List<List<Point>> pieces = tetris.currentPiece();
-        Point bestP;
-        int id;
+        Point bestP = null;
+        int id = 0;
         for(Point p : actualFree){
             id = -1;
             boolean found = false;
