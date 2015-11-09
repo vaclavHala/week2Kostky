@@ -22,7 +22,7 @@ public class Piece {
     private List<Point> points;
     private int hash;
 
-    Piece(List<Point> points, Point center) {
+    Piece(List<Point> points) {
         this.points = Collections.unmodifiableList(points);
         this.center= center;
     }
@@ -60,9 +60,6 @@ public class Piece {
      }
      */
 
-    public Point centerPosition(){
-        return this.center;
-    }
     
     public void rotate() {
         for (int i = 0; i < this.points.size(); i++) {
