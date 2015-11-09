@@ -31,6 +31,7 @@ public class Horses {
         int atY = y;
         int count = 0;
         while (atY > 0) {
+            System.out.println(atX+"x"+atY);
             if (x == 1 && y == 1) {
                 return new int[]{0, 0, count + 4};
             }
