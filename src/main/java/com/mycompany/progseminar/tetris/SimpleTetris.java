@@ -95,6 +95,16 @@ public class SimpleTetris implements Tetris {
 
     }
 
+    @Override
+    public boolean isOver() {
+        for(int i=0; i<boardWidth(); i++){
+            if(!isFree(i, boardHeight()-1)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     private void render(List<Point> droppedShape) {
         char[][] buffer = new char[boardHeight()][boardWidth()];
         for (int col = 0; col <boardHeight() ; col++) {

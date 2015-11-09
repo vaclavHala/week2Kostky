@@ -13,6 +13,8 @@ public interface Tetris {
 
     int boardHeight();
 
+    boolean isOver();
+    
     boolean isFree(int x, int y);
 
     List<List<Point>> currentPiece();
