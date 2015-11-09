@@ -7,22 +7,16 @@ package com.mycompany.progseminar.tetris;
 
 import java.util.List;
 
-/**
- *
- * @author xhala3
- */
 public interface Tetris {
-
+    
     int boardWidth();
 
     int boardHeight();
 
     boolean isFree(int x, int y);
 
-    List<Point> currentPiece();
+    List<List<Point>> currentPiece();
 
-    void rotate();
+    void drop(int x, int rotationId);
     
-    void drop(int x);
-
 }

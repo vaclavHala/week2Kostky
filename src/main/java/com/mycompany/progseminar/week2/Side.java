@@ -18,13 +18,13 @@ public enum Side {
     LEFT(p -> new Point(p.getX()-1, p.getY())),
     RIGHT(p -> new Point(p.getX()+1, p.getY()));
     
-    private Function<Point, Point> fun;
+    private Function<Point2, Point2> fun;
 
-    private Side(Function<Point, Point> fun) {
+    private Side(Function<Point2, Point2> fun) {
         this.fun = fun;
     }
     
-    public Point plus(Point point){
+    public Point2 plus(Point2 point){
         return fun.apply(point);
     }
 }

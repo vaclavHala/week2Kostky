@@ -9,11 +9,11 @@ package com.mycompany.progseminar.week2;
  *
  * @author xhala3
  */
-public class Point implements Comparable<Point>{
+public class Point2 implements Comparable<Point2>{
     
     private int x;
     private int y;
-
+    
     public int getX() {
         return x;
     }
@@ -22,21 +22,21 @@ public class Point implements Comparable<Point>{
         return y;
     }
 
-    public Point(int x, int y) {
+    public Point2(int x, int y) {
         this.x = x;
         this.y = y;
     }
     
-    public Point mirrorX(){
-        return new Point(-this.x, this.y);
+    public Point2 mirrorX(){
+        return new Point2(-this.x, this.y);
     }
 
-    public Point mirrorY(){
-        return new Point(this.x, -this.y);
+    public Point2 mirrorY(){
+        return new Point2(this.x, -this.y);
     }
     
-    public Point rotate90Clockwise(){
-        return new Point( this.y, -1*this.x);
+    public Point2 rotate90Clockwise(){
+        return new Point2( this.y, -1*this.x);
     }
 
     @Override
@@ -46,15 +46,15 @@ public class Point implements Comparable<Point>{
     
     @Override
     public boolean equals(Object obj) {
-         if(!(obj instanceof Point)){
+         if(!(obj instanceof Point2)){
             return false;
         }
-        Point other =(Point)obj;
+        Point2 other =(Point2)obj;
         return this.x == other.x && this.y == other.y;
     }
     
     @Override
-    public int compareTo(Point o) {
+    public int compareTo(Point2 o) {
         if(this.y == o.y){
             return this.x - o.x;
         } else {

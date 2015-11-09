@@ -7,19 +7,19 @@ package com.mycompany.progseminar.week2;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.mycompany.progseminar.week2.Point;
+import com.mycompany.progseminar.week2.Point2;
 /**
  *
  * @author pato
  */
 public class PieceCreator {
-    private List<Point> points = new ArrayList<>();
+    private List<Point2> points = new ArrayList<>();
     
     public Piece create(String piece) {
         int x = 0;
         int y = 0;
         for (int i = 0 ; i < piece.length() ; i++ ) {
-            if (piece.charAt(i) == '*') points.add(new Point(x,y));
+            if (piece.charAt(i) == '*') points.add(new Point2(x,y));
             x++;
             if (piece.charAt(i) == '\n') {
                 y++;

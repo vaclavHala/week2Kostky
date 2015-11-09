@@ -5,16 +5,18 @@
  */
 package com.mycompany.progseminar.tetris;
 
-import com.mycompany.progseminar.week2.*;
-
 /**
  *
  * @author xhala3
  */
-public class Point implements Comparable<Point>{
-    
+public class Point implements Comparable<Point> {
+
     private int x;
     private int y;
+
+    public static Point p(int x, int y) {
+        return new Point(x, y);
+    }
 
     public int getX() {
         return x;
@@ -28,40 +30,32 @@ public class Point implements Comparable<Point>{
         this.x = x;
         this.y = y;
     }
-    
-    public Point mirrorX(){
-        return new Point(-this.x, this.y);
-    }
 
-    public Point mirrorY(){
-        return new Point(this.x, -this.y);
-    }
-    
-    public Point rotate90Clockwise(){
-        return new Point( this.y, -1*this.x);
+    public Point rotate90Clockwise() {
+        return new Point(this.y, -1 * this.x);
     }
 
     @Override
     public String toString() {
-        return "<"+x+","+y+">";
+        return "<" + x + "," + y + ">";
     }
-    
+
     @Override
     public boolean equals(Object obj) {
-         if(!(obj instanceof Point)){
+        if (!(obj instanceof Point)) {
             return false;
         }
-        Point other =(Point)obj;
+        Point other = (Point) obj;
         return this.x == other.x && this.y == other.y;
     }
-    
+
     @Override
     public int compareTo(Point o) {
-        if(this.y == o.y){
+        if (this.y == o.y) {
             return this.x - o.x;
         } else {
             return this.y - o.y;
         }
     }
-    
+
 }

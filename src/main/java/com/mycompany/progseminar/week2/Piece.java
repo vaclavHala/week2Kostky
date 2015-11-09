@@ -17,26 +17,26 @@ import static java.util.stream.Collectors.toList;
  */
 public class Piece {
 
-    public static Piece ORIGIN = new Piece(asList(new Point(0, 0)));
+    public static Piece ORIGIN = new Piece(asList(new Point2(0, 0)));
 
-    private List<Point> points;
+    private List<Point2> points;
     private int hash;
 
-    Piece(List<Point> points) {
+    Piece(List<Point2> points) {
         this.points = Collections.unmodifiableList(normalize(points));
         this.hash = computeHashCode();
     }
 
-    static List<Point> normalize(List<Point> original) {
+    static List<Point2> normalize(List<Point2> original) {
         int minX = Integer.MAX_VALUE;
         int minY = Integer.MAX_VALUE;
-        for (Point p : original) {
+        for (Point2 p : original) {
             minX = Math.min(minX, p.getX());
             minY = Math.min(minY, p.getY());
         }
-        List<Point> normalized = new ArrayList<>(original.size());
-        for (Point p : original) {
-            normalized.add(new Point(p.getX() - minX, p.getY() - minY));
+        List<Point2> normalized = new ArrayList<>(original.size());
+        for (Point2 p : original) {
+            normalized.add(new Point2(p.getX() - minX, p.getY() - minY));
         }
         Collections.sort(normalized);
         return normalized;
@@ -45,7 +45,7 @@ public class Piece {
     public String render() {
         int maxX = 0;
         int maxY = 0;
-        for (Point p : points) {
+        for (Point2 p : points) {
             if (p.getX() > maxX) {
                 maxX = p.getX();
             }
@@ -58,7 +58,7 @@ public class Piece {
         int indexOfPoint = 0;
         for (int i = 0; i <= maxY; i++) {
             for (int j = 0; j <= maxX; j++) {
-                Point p = points.get(indexOfPoint);
+                Point2 p = points.get(indexOfPoint);
                 if (p.getX() == j && p.getY() == i) {
                     piece.append("#");
                     if (indexOfPoint < points.size() - 1) {
@@ -76,13 +76,13 @@ public class Piece {
 
     public Piece rotate() {
         return new Piece(this.points.stream()
-            .map(Point::rotate90Clockwise)
+            .map(Point2::rotate90Clockwise)
             .collect(toList()));
     }
 
     public Piece mirror() {
         return new Piece(this.points.stream()
-            .map(Point::mirrorX)
+            .map(Point2::mirrorX)
             .collect(toList()));
     }
 
@@ -127,7 +127,7 @@ public class Piece {
         int maxX = Integer.MIN_VALUE;
         int minY = Integer.MAX_VALUE;
         int maxY = Integer.MIN_VALUE;
-        for (Point p : this.points) {
+        for (Point2 p : this.points) {
             minX = Math.min(minX, p.getX());
             minY = Math.min(minY, p.getY());
             maxX = Math.max(maxX, p.getX());
@@ -141,12 +141,12 @@ public class Piece {
         return this.points.toString();
     }
 
-    public List<Point> points() {
+    public List<Point2> points() {
         return this.points;
     }
 
-    public Piece appendAt(Point point, Side side) {
-        List<Point> newPoints = new ArrayList<>(points);
+    public Piece appendAt(Point2 point, Side side) {
+        List<Point2> newPoints = new ArrayList<>(points);
         newPoints.add(side.plus(point));
         return new Piece(newPoints);
     }

@@ -45,13 +45,13 @@ public class Algo {
 
     static Set<Piece> appendedToOne(Piece piece) {
         Set<Piece> newPieces = new HashSet<>();
-        for (Point startingPoint : piece.points()) {
+        for (Point2 startingPoint : piece.points()) {
             for (Side side : Side.values()) {
-                Point newPoint = side.plus(startingPoint);
+                Point2 newPoint = side.plus(startingPoint);
                 if (piece.points().contains(newPoint)) {
                     continue;
                 }
-                List<Point> newPoints = new ArrayList<>();
+                List<Point2> newPoints = new ArrayList<>();
                 newPoints.addAll(piece.points());
                 newPoints.add(newPoint);
                 newPieces.add(new Piece(newPoints));

@@ -1,5 +1,5 @@
 
-import com.mycompany.progseminar.week2.Point;
+import com.mycompany.progseminar.week2.Point2;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -15,15 +15,15 @@ import java.util.Optional;
  */
 public class Queens {
 
-    private List<Point> queens = new ArrayList<>();
+    private List<Point2> queens = new ArrayList<>();
     private int n;
 
     public static void main(String[] args) {
         int n = 20;
-        List<Point> queens = new Queens().doIt(n);
+        List<Point2> queens = new Queens().doIt(n);
         for (int y = 0; y < n; y++) {
             for (int x = 0; x < n; x++) {
-                char c = queens.contains(new Point(x, y))
+                char c = queens.contains(new Point2(x, y))
                         ? 'x'
                         : '.';
                 System.out.print(c);
@@ -33,19 +33,19 @@ public class Queens {
         }
     }
 
-    public List<Point> doIt(int n) {
+    public List<Point2> doIt(int n) {
         this.n = n;
-        this.queens.add(new Point(0, 0));
+        this.queens.add(new Point2(0, 0));
 
         while (this.queens.size() < n) {
-            Optional<Point> nextFree = findNextFree(last(queens));
+            Optional<Point2> nextFree = findNextFree(last(queens));
             if (nextFree.isPresent()) {
                 this.queens.add(nextFree.get());
             } else {
                 while (true) {
-                    Point last = last(queens);
+                    Point2 last = last(queens);
                     this.queens.remove(last);
-                    Optional<Point> nextPossible = findNextFree(next(last));
+                    Optional<Point2> nextPossible = findNextFree(next(last));
                     if(nextPossible.isPresent()){
                         this.queens.add(nextPossible.get());
                         break;
@@ -58,12 +58,12 @@ public class Queens {
         return queens;
     }
 
-    private Point last(List<Point> l) {
+    private Point2 last(List<Point2> l) {
         return l.get(l.size() - 1);
     }
 
-    private boolean isFree(Point p) {
-        for (Point queen : queens) {
+    private boolean isFree(Point2 p) {
+        for (Point2 queen : queens) {
             if (Math.abs(p.getX() - queen.getX()) == Math.abs(p.getY() - queen.getY())
                     || (p.getX() == queen.getX() || p.getY() == queen.getY())) {
                 return false;
@@ -72,19 +72,19 @@ public class Queens {
         return true;
     }
 
-    private Point next(Point from) {
+    private Point2 next(Point2 from) {
         if (from.getX() == n-1) {
-            return new Point(0, from.getY() + 1);
+            return new Point2(0, from.getY() + 1);
         }
-        return new Point(from.getX() + 1, from.getY());
+        return new Point2(from.getX() + 1, from.getY());
     }
 
-    private boolean hasNext(Point point) {
+    private boolean hasNext(Point2 point) {
         return !(point.getX() == n - 1 && point.getY() == n - 1);
     }
 
-    private Optional<Point> findNextFree(Point from) {
-        Point at = new Point(from.getX(), from.getY());
+    private Optional<Point2> findNextFree(Point2 from) {
+        Point2 at = new Point2(from.getX(), from.getY());
         while (hasNext(at)) {
             if (isFree(at)) {
                 return Optional.of(at);
