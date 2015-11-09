@@ -41,6 +41,10 @@ public class AI {
         Collections.sort(actualFree, new PointComparator());
     }
     
+    public void Round(){
+        findFreePlaces();
+        findPlaceToDrop();
+    }
     
     public void findPlaceToDrop() {
         List<List<Point>> pieces = tetris.currentPiece();
@@ -56,7 +60,9 @@ public class AI {
             }
             if (found) break;
         }
-        tetris.drop(bestP.getX(), id);
+        System.out.println(bestP.getX() + " id " + id);
+        //tetris.drop(bestP.getX(), id);
+        
     }
     
     public boolean checkPiece(List<Point> lp, Point freePoint) {

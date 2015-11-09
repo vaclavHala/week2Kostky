@@ -32,7 +32,8 @@ public class StubTetrisTest {
                 ".XXXX",
                 "XX.XX"
         ));
-        
+        AI ai = new AI(t);
+        ai.Round();
     }
     
 }
