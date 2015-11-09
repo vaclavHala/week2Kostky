@@ -20,9 +20,12 @@ public class NewClass {
                 .collect(toList());
         Tetris t = new SimpleTetris(10, 20, shapes);
         AI ai = new AI(t);
-        while(t.isOver()){
-            ai.findPlaceToDrop();
+        int c = 0;
+        while(!t.isOver()){
+            ai.round();
+            c++;
         }
+        System.out.println("GRAND TOTAL: "+c);
         
     }
 }

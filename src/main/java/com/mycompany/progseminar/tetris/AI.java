@@ -30,7 +30,7 @@ public class AI {
         int minY;
         for(int j = 0 ; j < tetris.boardWidth(); j++){
             minY = 21;
-            for (int i = maxRow; i >= 0 ; i--){
+            for (int i = tetris.boardHeight()-1; i >= -1 ; i--){
                 if (tetris.isFree(j, i)) minY = i;
                 else {
                     actualFree.add(new Point(j,minY));
@@ -39,8 +39,13 @@ public class AI {
             }
         }
         Collections.sort(actualFree, new PointComparator());
+System.out.println(actualFree);        
     }
     
+    public void round(){
+        findFreePlaces();
+        findPlaceToDrop();
+    }
     
     public void findPlaceToDrop() {
         List<List<Point>> pieces = tetris.currentPiece();
@@ -48,23 +53,26 @@ public class AI {
         int id = 0;
         for(Point p : actualFree){
             id = -1;
-            boolean found = false;
             bestP = p;
             for(List<Point> lp : pieces){
                 id++;
-                found = checkPiece(lp, p);
+                if(checkPiece(lp, p)){
+                    System.out.println("drop "+bestP);
+                    tetris.drop(bestP.getX(), id);
+                    return;
+                }
             }
-            if (found) break;
         }
-        tetris.drop(bestP.getX(), id);
     }
     
     public boolean checkPiece(List<Point> lp, Point freePoint) {
         for (int i = 0; i < lp.size(); i++) {
             if (!tetris.isFree(lp.get(i).getX() + freePoint.getX(), lp.get(i).getY() + freePoint.getY())) {
+                System.out.println(lp+" "+freePoint+"false");
                return false;
             }
         }
+        System.out.println(lp+" "+freePoint+"true");
         return true;
     }
 }

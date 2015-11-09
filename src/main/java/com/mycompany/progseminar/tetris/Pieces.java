@@ -22,18 +22,25 @@ public enum Pieces {
     I,
     O,
     S,
-    Z;
+    Z,
+    T;
 
     private static final List<Point> BASE_L = asList(p(0, 0), p(0, -1), p(0, 1), p(1, 1));
     private static final List<Point> BASE_J = asList(p(0, 0), p(0, -1), p(0, 1), p(-1, 1));
     private static final List<Point> BASE_I = asList(p(0, 0), p(0, -1), p(0, 1), p(0, 2));
-    private static final List<Point> BASE_O = asList(p(0, 0), p(0, 1), p(0, 1), p(1, 1));
+    private static final List<Point> BASE_O = asList(p(0, 0), p(0, 1), p(1, 0), p(1, 1));
     private static final List<Point> BASE_S = asList(p(0, 0), p(1, 0), p(0, 1), p(-1, 1));
     private static final List<Point> BASE_Z = asList(p(0, 0), p(0, 1), p(1, 1), p(-1, 0));
+    private static final List<Point> BASE_T = asList(p(0, 0), p(-1, 0), p(1, 0), p(0, 1));
 
     private List<List<Point>> shapes;
 
     static {
+        T.shapes = asList(
+                normalize(BASE_T),
+                normalize(rotated(BASE_T)),
+                normalize(rotated(rotated(BASE_T))),
+                normalize(rotated(rotated(rotated(BASE_T)))));
         L.shapes = asList(
                 normalize(BASE_L),
                 normalize(rotated(BASE_L)),
@@ -55,6 +62,7 @@ public enum Pieces {
         Z.shapes = asList(
                 normalize(BASE_Z),
                 normalize(rotated(BASE_Z)));
+        
     }
 
     private List<List<Point>> associatedShapes() {

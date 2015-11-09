@@ -61,16 +61,14 @@ public class SimpleTetris implements Tetris {
     @Override
     public void drop(int x, int rotationId) {
         List<Point> at = this.current.get(rotationId).stream()
-                .map((Point b) -> new Point(b.getX(), b.getY() + boardHeight()))
+                .map((Point b) -> new Point(b.getX()+x, b.getY() + boardHeight()))
                 .collect(toList());
 
         while (canShiftDown(at)) {
             at = shiftedDown(at);
         }
         settle(at);
-        for(Point p: at){
-            System.out.println(p);
-        }
+        current = incomming.next();
         render(at);
     }
 
@@ -123,6 +121,7 @@ public class SimpleTetris implements Tetris {
             }
             System.out.println("");
         }
+        System.out.println("");
     }
 
 }
