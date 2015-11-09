@@ -5,6 +5,7 @@
  */
 package com.mycompany.progseminar.tetris;
 
+import static com.mycompany.progseminar.tetris.Point.p;
 import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_LIST;
 import java.util.List;
@@ -21,16 +22,15 @@ import static org.junit.Assert.*;
  */
 public class SimpleTetrisTest {
     
-  
     @Test
-    public void testWidthHeight(){
+    public void testWidthHeight() {
         Tetris t = new SimpleTetris(3, 2, EMPTY_LIST);
         assertEquals(3, t.boardWidth());
         assertEquals(2, t.boardHeight());
     }
     
     @Test
-    public void testAllFree(){
+    public void testAllFree() {
         Tetris t = new SimpleTetris(3, 2, EMPTY_LIST);
         assertFalse(t.isFree(0, 0));
         assertFalse(t.isFree(2, 0));
@@ -39,8 +39,9 @@ public class SimpleTetrisTest {
     }
     
     @Test
-    public void testDrop(){
-        
+    public void testDrop() {
+        SimpleTetris s = new SimpleTetris(5, 5, asList(Pieces.getShapesOf('L')));
+        s.drop(0, 2);
     }
     
     
