@@ -5,11 +5,8 @@
  */
 package com.mycompany.progseminar.tetris;
 
-import com.mycompany.progseminar.tetris.core.SimpleTetris;
-import com.mycompany.progseminar.tetris.core.Tetris;
-import com.mycompany.progseminar.tetris.core.Point;
-import com.mycompany.progseminar.tetris.core.Pieces;
 import com.mycompany.progseminar.tetris.ai.AI;
+import com.mycompany.progseminar.tetris.core.*;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
 
@@ -18,19 +15,21 @@ import static java.util.stream.Collectors.toList;
  * @author xhala3
  */
 public class Main {
+
     public static void main(String[] args) {
-        List<List<List<Point>>> shapes = 
-                "IIOZOTISJJLTISSOSLSIZJLOSSLOSOZILIOIOSLSLTZJJOIIILJLLZTZOITSLOZISIOZTLLLJJJOZIOLJJOZSITLTLOZTZSIJSJJZILOLJIZLLSZSSTSLTOSSOSOJIJLZITIZJZOZJLTSIOOSOLSLSSSOOZJSIIOZLTZJTLIJLJLJSOTSOILTSSZSISOTSOTTZZTTJZLOZLTOLZTJSOSLSILLISSZTSZLZLZIZJTJZTZLLOIIJIIIOTTIIIZZLJISLJISOOLOOOJSJOIZILLTTZZTTIOLZTJJOOTOILSOLJJSILIOJITTJJSOIITLSZOIZTSJOOZJSIZOSSSZJTTJSTSJIJSOLTTTIOOTTOTLILOIJSLZLOOSTTTSLOOTOZTSZLTSTIOZSSJTIZJLLOIOISSTTSTSOTTZJJSZJIOIIOZITLTITIISTOTTJSOLLOJJSTSLJJZSSJSLOOTOOOJITZOJLLITIJSSJSTZOOTOIZZZITOLSOO"
-                .chars().mapToObj(c -> Pieces.getShapesOf((char) c))
-                .collect(toList());
-        Tetris t = new SimpleTetris(10, 20, shapes);
+        List<List<Shape>> shapes
+            = "IIOZOTISJJLTISSOSLSIZJLOSSLOSOZILIOIOSLSLTZJJOIIILJLLZTZOITSLOZISIOZTLLLJJJOZIOLJJOZSITLTLOZTZSIJSJJZILOLJIZLLSZSSTSLTOSSOSOJIJLZITIZJZOZJLTSIOOSOLSLSSSOOZJSIIOZLTZJTLIJLJLJSOTSOILTSSZSISOTSOTTZZTTJZLOZLTOLZTJSOSLSILLISSZTSZLZLZIZJTJZTZLLOIIJIIIOTTIIIZZLJISLJISOOLOOOJSJOIZILLTTZZTTIOLZTJJOOTOILSOLJJSILIOJITTJJSOIITLSZOIZTSJOOZJSIZOSSSZJTTJSTSJIJSOLTTTIOOTTOTLILOIJSLZLOOSTTTSLOOTOZTSZLTSTIOZSSJTIZJLLOIOISSTTSTSOTTZJJSZJIOIIOZITLTITIISTOTTJSOLLOJJSTSLJJZSSJSLOOTOOOJITZOJLLITIJSSJSTZOOTOIZZZITOLSOO"
+            .chars().mapToObj(c -> Pieces.getShapesOf((char) c))
+            .collect(toList());
+        SimpleTetris t = new SimpleTetris(10, 20, shapes.iterator());
         AI ai = new AI(t);
         int c = 0;
-        while(!t.isOver()){
+        while (!t.isOver()) {
             ai.round();
+            t.render();
             c++;
         }
-        System.out.println("GRAND TOTAL: "+c);
-        
+        System.out.println("GRAND TOTAL: " + c);
+
     }
 }

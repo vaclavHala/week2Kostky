@@ -8,17 +8,17 @@ package com.mycompany.progseminar.tetris.core;
 import java.util.List;
 
 public interface Tetris {
-    
+
     int boardWidth();
 
     int boardHeight();
 
     boolean isOver();
-    
+
     boolean isFree(int x, int y);
 
-    List<List<Point>> currentPiece();
+    List<Shape> currentPiece();
 
     void drop(int x, int rotationId);
-    
+
 }

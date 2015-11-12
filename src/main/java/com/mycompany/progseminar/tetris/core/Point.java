@@ -5,7 +5,7 @@
  */
 package com.mycompany.progseminar.tetris.core;
 
-public class Point implements Comparable<Point> {
+public class Point {
 
     private int x;
     private int y;
@@ -39,15 +39,6 @@ public class Point implements Comparable<Point> {
         }
         Point other = (Point) obj;
         return this.x == other.x && this.y == other.y;
-    }
-
-    @Override
-    public int compareTo(Point o) {
-        if (this.y == o.y) {
-            return this.x - o.x;
-        } else {
-            return this.y - o.y;
-        }
     }
 
 }

@@ -5,16 +5,12 @@
  */
 package com.mycompany.progseminar.tetris.core;
 
-import static com.mycompany.progseminar.tetris.core.Point.p;
-import java.util.ArrayList;
+import static com.mycompany.progseminar.tetris.core.Offset.off;
 import static java.util.Arrays.asList;
 import java.util.Collections;
 import java.util.List;
+import static java.util.stream.Collectors.toList;
 
-/**
- *
- * @author xhala3
- */
 public enum Pieces {
 
     L,
@@ -25,74 +21,53 @@ public enum Pieces {
     Z,
     T;
 
-    private static final List<Point> BASE_L = asList(p(0, 0), p(0, -1), p(0, 1), p(1, 1));
-    private static final List<Point> BASE_J = asList(p(0, 0), p(0, -1), p(0, 1), p(-1, 1));
-    private static final List<Point> BASE_I = asList(p(0, 0), p(0, -1), p(0, 1), p(0, 2));
-    private static final List<Point> BASE_O = asList(p(0, 0), p(0, 1), p(1, 0), p(1, 1));
-    private static final List<Point> BASE_S = asList(p(0, 0), p(1, 0), p(0, 1), p(-1, 1));
-    private static final List<Point> BASE_Z = asList(p(0, 0), p(0, 1), p(1, 1), p(-1, 0));
-    private static final List<Point> BASE_T = asList(p(0, 0), p(-1, 0), p(1, 0), p(0, 1));
+    private static final Shape BASE_L = new Shape(asList(off(0, 0), off(0, -1), off(0, 1), off(1, 1)));
+    private static final Shape BASE_J = new Shape(asList(off(0, 0), off(0, -1), off(0, 1), off(-1, 1)));
+    private static final Shape BASE_I = new Shape(asList(off(0, 0), off(0, -1), off(0, 1), off(0, 2)));
+    private static final Shape BASE_O = new Shape(asList(off(0, 0), off(0, 1), off(1, 0), off(1, 1)));
+    private static final Shape BASE_S = new Shape(asList(off(0, 0), off(1, 0), off(0, 1), off(-1, 1)));
+    private static final Shape BASE_Z = new Shape(asList(off(0, 0), off(0, 1), off(1, 1), off(-1, 0)));
+    private static final Shape BASE_T = new Shape(asList(off(0, 0), off(-1, 0), off(1, 0), off(0, 1)));
 
-    private List<List<Point>> shapes;
+    private List<Shape> shapes;
 
     static {
-        T.shapes = asList(
-                normalize(BASE_T),
-                normalize(rotated(BASE_T)),
-                normalize(rotated(rotated(BASE_T))),
-                normalize(rotated(rotated(rotated(BASE_T)))));
-        L.shapes = asList(
-                normalize(BASE_L),
-                normalize(rotated(BASE_L)),
-                normalize(rotated(rotated(BASE_L))),
-                normalize(rotated(rotated(rotated(BASE_L)))));
-        J.shapes = asList(
-                normalize(BASE_J),
-                normalize(rotated(BASE_J)),
-                normalize(rotated(rotated(BASE_J))),
-                normalize(rotated(rotated(rotated(BASE_J)))));
-        I.shapes = asList(
-                normalize(BASE_I),
-                normalize(rotated(BASE_I)));
-        O.shapes = asList(
-                normalize(BASE_O));
-        S.shapes = asList(
-                normalize(BASE_S),
-                normalize(rotated(BASE_S)));
-        Z.shapes = asList(
-                normalize(BASE_Z),
-                normalize(rotated(BASE_Z)));
-        
+        T.shapes = Collections.unmodifiableList(asList(
+            BASE_T,
+            rotated(BASE_T),
+            rotated(rotated(BASE_T)),
+            rotated(rotated(rotated(BASE_T)))));
+        L.shapes = Collections.unmodifiableList(asList(
+            BASE_L,
+            rotated(BASE_L),
+            rotated(rotated(BASE_L)),
+            rotated(rotated(rotated(BASE_L)))));
+        J.shapes = Collections.unmodifiableList(asList(
+            BASE_J,
+            rotated(BASE_J),
+            rotated(rotated(BASE_J)),
+            rotated(rotated(rotated(BASE_J)))));
+        I.shapes = Collections.unmodifiableList(asList(
+            BASE_I,
+            rotated(BASE_I)));
+        O.shapes = Collections.unmodifiableList(asList(
+            BASE_O));
+        S.shapes = Collections.unmodifiableList(asList(
+            BASE_S,
+            rotated(BASE_S)));
+        Z.shapes = Collections.unmodifiableList(asList(
+            BASE_Z,
+            rotated(BASE_Z)));
+
     }
 
-    private List<List<Point>> associatedShapes() {
-        return this.shapes;
+    public static List<Shape> getShapesOf(char symbol) {
+        return Pieces.valueOf(String.valueOf(symbol)).shapes;
     }
 
-    public static List<List<Point>> getShapesOf(char symbol) {
-        return Pieces.valueOf(String.valueOf(symbol)).associatedShapes();
-    }
-
-    static List<Point> normalize(List<Point> original) {
-        int minX = Integer.MAX_VALUE;
-        int minY = Integer.MAX_VALUE;
-        for (Point p : original) {
-            minX = Math.min(minX, p.x());
-            minY = Math.min(minY, p.y());
-        }
-        List<Point> normalized = new ArrayList<>(original.size());
-        for (Point p : original) {
-            normalized.add(new Point(p.x() - minX, p.y() - minY));
-        }
-        Collections.sort(normalized);
-        return normalized;
-    }
-
-    static List<Point> rotated(List<Point> points) {
-        List<Point> rotated = new ArrayList<>();
-        for (Point p : points) {
-            rotated.add(p.rotate90Clockwise());
-        }
-        return rotated;
+    static Shape rotated(Shape orig) {
+        return new Shape(orig.normalizedOffsets().stream()
+            .map(Offset::rotate90Clockwise)
+            .collect(toList()));
     }
 }

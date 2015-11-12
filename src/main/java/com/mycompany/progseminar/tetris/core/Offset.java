@@ -1,8 +1,9 @@
 package com.mycompany.progseminar.tetris.core;
 
-public class Offset
-
-    Comparable<Point> {
+/**
+ * sorted by Y first, if same then X, lower values of Y come first
+ */
+public class Offset implements Comparable<Offset> {
 
     private int dX;
     private int dY;
@@ -19,13 +20,13 @@ public class Offset
         return dY;
     }
 
-    public Point(int x, int y) {
-        this.dX = x;
-        this.dY = y;
+    public Offset(int dX, int dY) {
+        this.dX = dX;
+        this.dY = dY;
     }
 
-    public Point rotate90Clockwise() {
-        return new Point(this.dY, -1 * this.dX);
+    public Offset rotate90Clockwise() {
+        return new Offset(this.dY, -1 * this.dX);
     }
 
     @Override
@@ -35,11 +36,11 @@ public class Offset
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Point)) {
+        if (!(obj instanceof Offset)) {
             return false;
         }
-        Point other = (Point) obj;
-        return this.dX == other.x && this.dY == other.y;
+        Offset other = (Offset) obj;
+        return this.dX == other.dX && this.dY == other.dY;
     }
 
     @Override
@@ -50,5 +51,4 @@ public class Offset
             return this.dY - o.dY;
         }
     }
-
 }
