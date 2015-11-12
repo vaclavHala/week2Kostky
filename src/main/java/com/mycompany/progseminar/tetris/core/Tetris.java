@@ -6,6 +6,7 @@
 package com.mycompany.progseminar.tetris.core;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface Tetris {
 
@@ -20,5 +21,7 @@ public interface Tetris {
     List<Shape> currentPiece();
 
     void drop(int x, int rotationId);
+
+    Optional<List<Point>> tryDrop(int x, int rotationId);
 
 }

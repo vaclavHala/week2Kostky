@@ -8,6 +8,7 @@ package com.mycompany.progseminar.tetris.core;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -60,18 +61,31 @@ public class SimpleTetris implements Tetris {
 
     @Override
     public void drop(int dropColumn, int rotationId) {
-        List<Point> materializedShape = this.current.get(rotationId)
+       Optional<List<Point>> materializedShape= tryDrop(dropColumn, rotationId);
+       if(!materializedShape.isPresent()){
+           RuntimeException up = new RuntimeException();
+           throw up;
+       }
+        settle(materializedShape.get());
+        clearFullRows();
+        latestDropped = materializedShape.get();
+        current = incomming.next();
+    }
+
+    @Override
+    public Optional<List<Point>> tryDrop(int dropColumn, int rotationId) {
+         List<Point> materializedShape = this.current.get(rotationId)
             .normalizedOffsets().stream()
             .map((Offset o) -> new Point(o.dX() + dropColumn, o.dY() + boardHeight()))
             .collect(toList());
-
+         if(materializedShape.stream().anyMatch(p -> p.x() >= boardWidth())){
+             return Optional.empty();
+         }
+         
         while (canShiftDown(materializedShape)) {
             materializedShape = shiftedDown(materializedShape);
         }
-        settle(materializedShape);
-        clearFullRows();
-        latestDropped = materializedShape;
-        current = incomming.next();
+        return Optional.of(Collections.unmodifiableList(materializedShape));
     }
 
     private List<Point> shiftedDown(List<Point> shape) {
@@ -86,7 +100,11 @@ public class SimpleTetris implements Tetris {
     }
 
     private void settle(List<Point> shape) {
+     //   System.out.println("settle "+shape);
         for (Point p : shape) {
+            if(p.y() >= boardHeight()){
+                continue;
+            }
             this.cellTaken[p.y()][p.x()] = true;
         }
     }
@@ -141,6 +159,9 @@ public class SimpleTetris implements Tetris {
             }
         }
         for (Point p : this.latestDropped) {
+            if(p.y() >= boardHeight()){
+                continue;
+            }
             buffer[p.y()][p.x()] = SYMBOL_ACTIVE;
         }
         for (int col = boardHeight() - 1; col >= 0; col--) {
