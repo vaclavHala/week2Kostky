@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.progseminar.tetris;
+package com.mycompany.progseminar.tetris.ai;
 
+import com.mycompany.progseminar.tetris.core.Point;
+import com.mycompany.progseminar.tetris.core.PointComparator;
+import com.mycompany.progseminar.tetris.core.Tetris;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -58,7 +61,7 @@ System.out.println(actualFree);
                 id++;
                 if(checkPiece(lp, p)){
                     System.out.println("drop "+bestP);
-                    tetris.drop(bestP.getX(), id);
+                    tetris.drop(bestP.x(), id);
                     return;
                 }
             }
@@ -67,7 +70,7 @@ System.out.println(actualFree);
     
     public boolean checkPiece(List<Point> lp, Point freePoint) {
         for (int i = 0; i < lp.size(); i++) {
-            if (!tetris.isFree(lp.get(i).getX() + freePoint.getX(), lp.get(i).getY() + freePoint.getY())) {
+            if (!tetris.isFree(lp.get(i).x() + freePoint.x(), lp.get(i).y() + freePoint.y())) {
                 System.out.println(lp+" "+freePoint+"false");
                return false;
             }

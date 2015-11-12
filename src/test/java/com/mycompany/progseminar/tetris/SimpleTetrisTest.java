@@ -5,7 +5,10 @@
  */
 package com.mycompany.progseminar.tetris;
 
-import static com.mycompany.progseminar.tetris.Point.p;
+import com.mycompany.progseminar.tetris.core.Tetris;
+import com.mycompany.progseminar.tetris.core.Pieces;
+import com.mycompany.progseminar.tetris.core.SimpleTetris;
+import static com.mycompany.progseminar.tetris.core.Point.p;
 import static java.util.Arrays.asList;
 import static java.util.Collections.EMPTY_LIST;
 import java.util.List;

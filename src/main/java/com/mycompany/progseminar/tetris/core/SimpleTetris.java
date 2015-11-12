@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.progseminar.tetris;
+package com.mycompany.progseminar.tetris.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -61,7 +61,7 @@ public class SimpleTetris implements Tetris {
     @Override
     public void drop(int x, int rotationId) {
         List<Point> at = this.current.get(rotationId).stream()
-                .map((Point b) -> new Point(b.getX()+x, b.getY() + boardHeight()))
+                .map((Point b) -> new Point(b.x()+x, b.y() + boardHeight()))
                 .collect(toList());
 
         while (canShiftDown(at)) {
@@ -74,18 +74,18 @@ public class SimpleTetris implements Tetris {
 
     private List<Point> shiftedDown(List<Point> shape) {
         return shape.stream()
-                .map((Point b) -> new Point(b.getX(), b.getY() - 1))
+                .map((Point b) -> new Point(b.x(), b.y() - 1))
                 .collect(toList());
     }
 
     private boolean canShiftDown(List<Point> shape) {
         return shape.stream()
-                .allMatch(p -> isFree(p.getX(), p.getY() - 1));
+                .allMatch(p -> isFree(p.x(), p.y() - 1));
     }
 
     private void settle(List<Point> shape) {
         for (Point p : shape) {
-            this.board[p.getY()][p.getX()] = true;
+            this.board[p.y()][p.x()] = true;
         }
     }
 
@@ -113,7 +113,7 @@ public class SimpleTetris implements Tetris {
             }
         }
         for (Point p : droppedShape) {
-            buffer[p.getY()][p.getX()] = SYMBOL_ACTIVE;
+            buffer[p.y()][p.x()] = SYMBOL_ACTIVE;
         }
         for (int col = boardHeight()-1; col >=0 ; col--) {
             for (int row = 0; row < boardWidth(); row++) {

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.progseminar.tetris;
+package com.mycompany.progseminar.tetris.core;
 
-import static com.mycompany.progseminar.tetris.Point.p;
+import static com.mycompany.progseminar.tetris.core.Point.p;
 import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import java.util.Collections;
@@ -77,12 +77,12 @@ public enum Pieces {
         int minX = Integer.MAX_VALUE;
         int minY = Integer.MAX_VALUE;
         for (Point p : original) {
-            minX = Math.min(minX, p.getX());
-            minY = Math.min(minY, p.getY());
+            minX = Math.min(minX, p.x());
+            minY = Math.min(minY, p.y());
         }
         List<Point> normalized = new ArrayList<>(original.size());
         for (Point p : original) {
-            normalized.add(new Point(p.getX() - minX, p.getY() - minY));
+            normalized.add(new Point(p.x() - minX, p.y() - minY));
         }
         Collections.sort(normalized);
         return normalized;

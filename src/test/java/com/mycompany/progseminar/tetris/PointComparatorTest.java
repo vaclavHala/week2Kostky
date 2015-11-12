@@ -5,7 +5,8 @@
  */
 package com.mycompany.progseminar.tetris;
 
-import static com.mycompany.progseminar.tetris.Point.p;
+import com.mycompany.progseminar.tetris.core.PointComparator;
+import static com.mycompany.progseminar.tetris.core.Point.p;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

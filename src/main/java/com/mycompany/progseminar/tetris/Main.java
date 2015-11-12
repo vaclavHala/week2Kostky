@@ -5,6 +5,11 @@
  */
 package com.mycompany.progseminar.tetris;
 
+import com.mycompany.progseminar.tetris.core.SimpleTetris;
+import com.mycompany.progseminar.tetris.core.Tetris;
+import com.mycompany.progseminar.tetris.core.Point;
+import com.mycompany.progseminar.tetris.core.Pieces;
+import com.mycompany.progseminar.tetris.ai.AI;
 import java.util.List;
 import static java.util.stream.Collectors.toList;
 
@@ -12,7 +17,7 @@ import static java.util.stream.Collectors.toList;
  *
  * @author xhala3
  */
-public class NewClass {
+public class Main {
     public static void main(String[] args) {
         List<List<List<Point>>> shapes = 
                 "IIOZOTISJJLTISSOSLSIZJLOSSLOSOZILIOIOSLSLTZJJOIIILJLLZTZOITSLOZISIOZTLLLJJJOZIOLJJOZSITLTLOZTZSIJSJJZILOLJIZLLSZSSTSLTOSSOSOJIJLZITIZJZOZJLTSIOOSOLSLSSSOOZJSIIOZLTZJTLIJLJLJSOTSOILTSSZSISOTSOTTZZTTJZLOZLTOLZTJSOSLSILLISSZTSZLZLZIZJTJZTZLLOIIJIIIOTTIIIZZLJISLJISOOLOOOJSJOIZILLTTZZTTIOLZTJJOOTOILSOLJJSILIOJITTJJSOIITLSZOIZTSJOOZJSIZOSSSZJTTJSTSJIJSOLTTTIOOTTOTLILOIJSLZLOOSTTTSLOOTOZTSZLTSTIOZSSJTIZJLLOIOISSTTSTSOTTZJJSZJIOIIOZITLTITIISTOTTJSOLLOJJSTSLJJZSSJSLOOTOOOJITZOJLLITIJSSJSTZOOTOIZZZITOLSOO"

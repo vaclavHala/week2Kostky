@@ -3,12 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.progseminar.tetris;
+package com.mycompany.progseminar.tetris.core;
 
-/**
- *
- * @author xhala3
- */
 public class Point implements Comparable<Point> {
 
     private int x;
@@ -18,11 +14,11 @@ public class Point implements Comparable<Point> {
         return new Point(x, y);
     }
 
-    public int getX() {
+    public int x() {
         return x;
     }
 
-    public int getY() {
+    public int y() {
         return y;
     }
 
@@ -31,13 +27,9 @@ public class Point implements Comparable<Point> {
         this.y = y;
     }
 
-    public Point rotate90Clockwise() {
-        return new Point(this.y, -1 * this.x);
-    }
-
     @Override
     public String toString() {
-        return "<" + x + "," + y + ">";
+        return "[" + x + "," + y + "]";
     }
 
     @Override
