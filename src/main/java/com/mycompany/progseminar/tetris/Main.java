@@ -5,14 +5,6 @@
  */
 package com.mycompany.progseminar.tetris;
 
-import com.mycompany.progseminar.tetris.ai.AI;
-import com.mycompany.progseminar.tetris.core.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import static java.util.stream.Collectors.toList;
-
 /**
  *
  * @author xhala3
@@ -25,47 +17,15 @@ public class Main {
     private static String in4 = "IILTSOILZLJOLJITIZSJOJTZZLSSTLOSILJOITOLLIITLLLLOSJZTOTSZTJLLZTLJZZLLOOJTJSTJOJLTOIJLTZITLOOOOLZJSLLSJITOJOOJOLZZIJZZZLTSOOSOIOIITZSSOJJTTTLSOTILSJJITSIZZIOLJIOLLSSLTSSZIIIZLJSOZOJJZJTOSOTSISOLSSZOSSILJJTIZIZLILOZLLIOZTZIZLTOSJJIZSZLLJLOIIOLIILJSSZJSTZOIJLTSSSOLIJLSSJSLJITIIOLZOLTZLTLSJLTZJZJSITJZLITSSZLTTOZLJOJTJJIZTJZZZJLTTLOSZZITTTZTZZLLZTLIIIIJZOLZTJTIOIISLOSITSIJSJISIIOTLZLZILOIIJZOLLJTZTZSIZSLLLOSIOTSJOJTLSSLLJOSSZISJJTSLZTLSZTOIOTOSJLZSIJTZILIJTZIZSITSSIIZILLOZLZJTSIZOSZTJOSLLOSJOSJTIOTJS";
     private static String in5 = "LILLZJTLJLOIILOJSJOOSJJTIJSLILJOTSTLOLJSSTLOLZOJTLSLSSSZZSZOSLOTLZZOOOLISSIJJLIJIIZZSJTTIJOZZJSOSJZLTOTJLLOOLITOJLZIOZZTZOLLISTOLJTSIJOZILOOSIOOZJOLJLTJTTSSOSSSZSSISLITSTTZOSLZLOIOOJLLJOTSSZSSZJLZLTOZISZTTOTZISTJOZJSISOOLZZTITLZZLTOTLTTITOOJIZTOJLIZJTJZTSJJTOIIITJLLTIOJOLJSOZSOZSISLJTILOZIJLTLZJZSOOSLLZTJJJZOIJZJLIILIIOIIZJIZIOZLZZTTLSLSZZJIIJJTJSIJJOZZTZLOLSLOOJZLTOZLOJJZLJITIOSITZZSOZILOJTZJZOZZIIZZLOSIOIOLZSLLIIILZSJOIZSSTJZSSOSJOSJZJILZITTLSOITZISZZZITZTLLZIJIOLLLLJOLOLSLOZSJSSISLLLJIOJOSZII";
 
-    public static void main(String[] args) {
-        for (int i = 0; i < 60; i++) {
-            SimpleTetris t = new SimpleTetris(10, 20, new CycledIterator<>(parseInput(in3)));
-            AI ai = new AI(t);
-            int c = 0;
-            while (!t.isOver()) {
-                ai.round();
-                //   t.render();
-                c++;
-            }
-            System.out.println("GRAND TOTAL: " + c);
-        }
-    }
-
-    private static class CycledIterator<T> implements Iterator<T> {
-
-        private List<T> source;
-        private Iterator<T> base;
-
-        public CycledIterator(Collection<T> source) {
-            this.source = new ArrayList<>(source);
-            this.base = this.source.iterator();
-        }
-
-        @Override
-        public boolean hasNext() {
-            return true;
-        }
-
-        @Override
-        public T next() {
-            if (!base.hasNext()) {
-                base = source.iterator();
-            }
-            return base.next();
-        }
-    }
-
-    private static List<List<Shape>> parseInput(String in) {
-        return in
-                .chars().mapToObj(c -> Pieces.getShapesOf((char) c))
-                .collect(toList());
-    }
+    /* public static void main(String[] args) {
+     * SimpleTetris t = new SimpleTetris(10, 20, new CycledIterator<>(parseInput(in3)));
+     * AI ai = new AI(t);
+     * int c = 0;
+     * while (!t.isOver()) {
+     * ai.round();
+     * // t.render();
+     * c++;
+     * }
+     * System.out.println("GRAND TOTAL: " + c);
+     * } */
 }

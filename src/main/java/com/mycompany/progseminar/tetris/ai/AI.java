@@ -9,15 +9,9 @@ import com.mycompany.progseminar.tetris.core.*;
 import static com.mycompany.progseminar.tetris.core.Point.p;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.Collectors.toSet;
 
 /**
  *
@@ -26,28 +20,13 @@ import static java.util.stream.Collectors.toSet;
 public class AI {
 
     private Tetris tetris;
-    private int maxRow = 0;
-    //   private List<Point> actualFree = new ArrayList<Point>();
+    private AiParametrization parametrization;
 
-    public AI(Tetris t) {
+    public AI(Tetris t, AiParametrization parametrization) {
         tetris = t;
+        this.parametrization = parametrization;
     }
 
-    //create point for each column with minimal heigh of row
-    /* public void findFreePlaces() {
-        actualFree.clear();
-        
-        for(int col=0; col<tetris.boardWidth(); col++){
-            for(int row = tetris.boardHeight()-1; row>=0; row--){
-                if(!tetris.isFree(col, row-1)){
-                    actualFree.add(p(col,row));
-                    break;
-                }
-            }
-        }
-        Collections.sort(actualFree, new PointComparator());
-        System.out.println(actualFree);
-    }*/
     public void round() {
         findPlaceToDrop();
     }
@@ -60,78 +39,85 @@ public class AI {
             int rot = 0;
             for (Shape s : pieceShapes) {
                 Optional<List<Point>> result = tetris.tryDrop(col, rot);
-                
+
                 if (!result.isPresent()) {
                     rot++;
                     continue;
                 }
-          //      System.out.println(col+","+result.get());
+                //      System.out.println(col+","+result.get());
                 possibilities.add(new Drop(col, rot, evaluate(result.get())));
                 rot++;
             }
         }
 
         Collections.sort(possibilities);
-      //  System.out.println(possibilities.get(0));
+        //  System.out.println(possibilities.get(0));
         tetris.drop(possibilities.get(0).getColumn(), possibilities.get(0).getRotation());
     }
 
     public boolean checkShape(Shape shape, Point freePoint) {
         for (Offset o : shape.normalizedOffsets()) {
             if (!tetris.isFree(o.dX() + freePoint.x(), o.dY() + freePoint.y())) {
-        //        System.out.println(shape + " " + freePoint + "false");
+                //        System.out.println(shape + " " + freePoint + "false");
                 return false;
             }
         }
-     //   System.out.println(shape + " " + freePoint + "true");
+        //   System.out.println(shape + " " + freePoint + "true");
         return true;
     }
 
     private int evaluate(List<Point> result) {
-        int heightFitness = (tetris.boardHeight() - result.stream().map(p -> p.y()).min(Integer::compare).get()) * 2;
-        int flatnessFitness = -(result.stream().map(p -> p.y()).max(Integer::compare).get()
-                - result.stream().map(p -> p.y()).min(Integer::compare).get());
-        int bubbleFitness = bubbleFitness(result);
-        int rowClearFitness = rowClearFitness(result);
-        int failFitness = failFitness(result);
-     //   System.out.println("h"+heightFitness+" f"+flatnessFitness+" r"+rowClearFitness+" b"+bubbleFitness);
-        return heightFitness
-                + flatnessFitness
-                + rowClearFitness
-                + bubbleFitness
-                +failFitness;
+        return heightFitness(result)
+            + flatnessFitness(result)
+            + rowClearFitness(result)
+            + bubbleFitness(result)
+            + failFitness(result);
+    }
+
+    private int heightFitness(List<Point> result) {
+        int lowestPoint = tetris.boardHeight() - result.stream().map(p -> p.y()).min(Integer::compare).get();
+        return parametrization.height.apply(lowestPoint);
+    }
+
+    private int flatnessFitness(List<Point> result) {
+        int minMaxDifference = result.stream().map(p -> p.y()).max(Integer::compare).get()
+            - result.stream().map(p -> p.y()).min(Integer::compare).get();
+        return parametrization.flatness.apply(minMaxDifference);
     }
 
     private int bubbleFitness(List<Point> result) {
-        int fitness = 0;
+        int totalSize = 0;
         for (Point p : bottomSurfaceOf(result)) {
-            int bubbleSize = findBubbleUnder(p);
-            fitness -= (2* bubbleSize*bubbleSize );
+            int bubleColumnSize = findBubbleUnder(p);
+            totalSize += bubleColumnSize;
         }
-        return fitness;
+        return parametrization.bubble.apply(totalSize);
     }
 
     private int rowClearFitness(List<Point> result) {
-        int cleared = 0;
-        Set<Integer> rows = result.stream().map(p -> p.y()).collect(toSet());
-        label:
-        for(int row: rows){
-            for(int col=0; col<tetris.boardWidth(); col++){
-              if(tetris.isFree(col, row) && !result.contains(new Point(col, row)))  {
-                  continue label;
-              }
+        int rowsCleared = (int) result.stream()
+            .map(p -> p.y())
+            .filter(affectedRow -> isRowCleared(result, affectedRow))
+            .count();
+
+        return parametrization.rowClear.apply(rowsCleared);
+    }
+
+    private boolean isRowCleared(List<Point> result, int row) {
+        for (int col = 0; col < tetris.boardWidth(); col++) {
+            if (tetris.isFree(col, row) && !result.contains(new Point(col, row))) {
+                return false;
             }
-            cleared++;
         }
-        return cleared*tetris.boardWidth();
+        return true;
     }
 
     private List<Point> bottomSurfaceOf(List<Point> shape) {
         List<Point> bottom = new ArrayList<>();
         for (List<Point> colGroup : shape.stream()
-                .collect(groupingBy(p -> p.x())).values()) {
+            .collect(groupingBy(p -> p.x())).values()) {
             bottom.add(colGroup.stream()
-                    .min((p1, p2) -> p1.y() - p2.y()).get());
+                .min((p1, p2) -> p1.y() - p2.y()).get());
         }
         return bottom;
     }
@@ -145,8 +131,8 @@ public class AI {
         }
         return bubleSize;
     }
-    
-    private int failFitness(List<Point> point){
-        return (int) -(point.stream().filter(p -> p.y() >= tetris.boardHeight()-1).count() * 1000);
+
+    private int failFitness(List<Point> point) {
+        return (int) -(point.stream().filter(p -> p.y() >= tetris.boardHeight() - 1).count() * 1000);
     }
 }
